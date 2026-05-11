@@ -242,13 +242,13 @@ def create_recipe_edit2_layout():
     
     
 
-    # 表示のたびに、呼ばれます
-    if csv_recipe_data and len(csv_recipe_data) > 0:
-        # レシピデータ読み込みに成功している場合は、PLCデータを受信、照合を要求する
-        tcp_client_handler.read_recipe_data()
-    else:
-        # レシピデータがない場合の処理 (例: ログ出力やエラーハンドリングなど)
-        print("recipe_edit_layout: 編集対象のレシピデータが存在しません。")
+    # # 表示のたびに、呼ばれます
+    # if csv_recipe_data and len(csv_recipe_data) > 0:
+    #     # レシピデータ読み込みに成功している場合は、PLCデータを受信、照合を要求する
+    #     tcp_client_handler.read_recipe_data()
+    # else:
+    #     # レシピデータがない場合の処理 (例: ログ出力やエラーハンドリングなど)
+    #     print("recipe_edit_layout: 編集対象のレシピデータが存在しません。")
 
     # 8. ポップアップ用のレイアウト
     create_setting_modal(layout, '-reci2')

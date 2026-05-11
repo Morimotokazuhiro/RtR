@@ -556,22 +556,22 @@ class TcpClient:
         
         self.write_device_main(address, value, device_info)
 
-    def write_Rdevice_word(self, address: int, value: Union[float, int]):
-        """
-        レシピ用ファイルレジスタの書き込み
-        """
-        RECIPE_LENGTH = 100
-        REAL_LENGTH = 60
-        address_index = address % RECIPE_LENGTH
+    # def write_Rdevice_word(self, address: int, value: Union[float, int]):
+    #     """
+    #     レシピ用ファイルレジスタの書き込み
+    #     """
+    #     RECIPE_LENGTH = 100
+    #     REAL_LENGTH = 60
+    #     address_index = address % RECIPE_LENGTH
 
-        if address_index < REAL_LENGTH:
-            # REALは4バイト (float) をリトルエンディアン '<f'
-            device_info = {'type': 'REAL', 'header': 'FD', 'byte_size': 4, 'struct_format': '<f'}
-        else:
-            # INTは2バイト (signed short) をリトルエンディアン '<h' でパック
-            device_info = {'type': 'INT', 'header': 'FI', 'byte_size': 2, 'struct_format': '<h'}
+    #     if address_index < REAL_LENGTH:
+    #         # REALは4バイト (float) をリトルエンディアン '<f'
+    #         device_info = {'type': 'REAL', 'header': 'FD', 'byte_size': 4, 'struct_format': '<f'}
+    #     else:
+    #         # INTは2バイト (signed short) をリトルエンディアン '<h' でパック
+    #         device_info = {'type': 'INT', 'header': 'FI', 'byte_size': 2, 'struct_format': '<h'}
         
-        self.write_device_main(address, value, device_info)
+    #     self.write_device_main(address, value, device_info)
         
     def write_device_main(self, address: int, value: Union[float, int], device_info):
         data_type = device_info['type']
@@ -708,28 +708,28 @@ class TcpClient:
         print(f"TcpClient: 送信バッファをレシピ一括書き込みリクエスト 'FB' ({len(addresses)}デバイス) に更新しました。")
         return
     
-    def read_recipe_data(self):
-        # レシピデータ受信のコマンド
-        header_bytes = b'FR' 
-        send_data = header_bytes
+    # def read_recipe_data(self):
+    #     # レシピデータ受信のコマンド
+    #     header_bytes = b'FR' 
+    #     send_data = header_bytes
 
-        # 2. パディング
-        padding_size = self.SEND_SIZE - len(send_data)
-        if padding_size < 0:
-            error_log_handler.print_log("ERROR", f"TcpClient: エラー: 送信データサイズ ({len(send_data)}バイト) が最大サイズ ({self.SEND_SIZE}バイト) を超えています。")
-            return
+    #     # 2. パディング
+    #     padding_size = self.SEND_SIZE - len(send_data)
+    #     if padding_size < 0:
+    #         error_log_handler.print_log("ERROR", f"TcpClient: エラー: 送信データサイズ ({len(send_data)}バイト) が最大サイズ ({self.SEND_SIZE}バイト) を超えています。")
+    #         return
             
-        send_data += b'\x00' * padding_size
+    #     send_data += b'\x00' * padding_size
             
-        # 3. ロックを使用して安全に送信バッファを更新
-        with self._send_lock:
-            self._send_buffer.append(send_data)
+    #     # 3. ロックを使用して安全に送信バッファを更新
+    #     with self._send_lock:
+    #         self._send_buffer.append(send_data)
 
-        # イベントをセットして通信ループを即座に再開させる
-        self._event.set()
+    #     # イベントをセットして通信ループを即座に再開させる
+    #     self._event.set()
             
-        print(f"TcpClient: 送信バッファをレシピ読み込みリクエスト 'FR' に更新しました。")
-        return
+    #     print(f"TcpClient: 送信バッファをレシピ読み込みリクエスト 'FR' に更新しました。")
+    #     return
 
 
 # --- シングルトンインスタンスの作成 ---   
