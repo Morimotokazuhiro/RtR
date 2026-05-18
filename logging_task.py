@@ -132,6 +132,56 @@ logging_monitor_data = [
     {'name': 'B室 ロール径', 'format': FormatSpecifier.F3_2, 'list_index': 60,
      'device': 'D6000'},
     {'name': 'プラズマ点灯積算時間', 'format': 'date', 'list_index': 61},
+    {'name': 'プロセスガスバルブポート1開', 'format': 'bit', 'list_index': 220,
+     'device': 'M600'},
+    {'name': 'プロセスガスバルブポート2開', 'format': 'bit', 'list_index': 221,
+     'device': 'M600'},
+    {'name': 'プロセスガスバルブポート3開', 'format': 'bit', 'list_index': 222,
+     'device': 'M600'},
+    {'name': 'プロセスガスバルブポート4開', 'format': 'bit', 'list_index': 223,
+     'device': 'M600'},    
+    {'name': 'G1G7P0ガス1次側開', 'format': 'bit', 'list_index': 248,
+     'device': 'M600'},
+    {'name': 'G1P1 プロセスH2一次側開', 'format': 'bit', 'list_index': 251,
+     'device': 'M600'},  
+    {'name': 'G1P2 プロセスH2二次側開', 'format': 'bit', 'list_index': 227,
+     'device': 'M600'},
+    {'name': 'G2P1 プロセスCH4一次側開', 'format': 'bit', 'list_index': 252,
+     'device': 'M600'},
+    {'name': 'G2P2 プロセスCH4二次側開', 'format': 'bit', 'list_index': 238,
+     'device': 'M600'},
+    {'name': 'G3P1 プロセスO2一次側開', 'format': 'bit', 'list_index': 253,
+     'device': 'M600'},
+    {'name': 'G3P2 プロセスO2二次側開', 'format': 'bit', 'list_index': 240,
+     'device': 'M600'},
+    {'name': 'G4P1 プロセスAr一次側開', 'format': 'bit', 'list_index': 255,
+     'device': 'M600'},   
+    {'name': 'G4P2 プロセスAr二次側開', 'format': 'bit', 'list_index': 244,
+     'device': 'M600'},
+    {'name': 'G5P1 プロセスN2一次側開', 'format': 'bit', 'list_index': 256,
+     'device': 'M600'}, 
+    {'name': 'G5P2 プロセスN2二次側開', 'format': 'bit', 'list_index': 246,
+     'device': 'M600'},  
+    {'name': 'G6P1 シールドH2一次側開', 'format': 'bit', 'list_index': 250,
+     'device': 'M600'},   
+    {'name': 'G6P2 シールドH2二次側開', 'format': 'bit', 'list_index': 228,
+     'device': 'M600'},       
+    {'name': 'G7P1 シールドAr一次側開', 'format': 'bit', 'list_index': 254,
+     'device': 'M600'},
+    {'name': 'G7P2 シールドAr二次側開', 'format': 'bit', 'list_index': 242,
+     'device': 'M600'},
+    {'name': 'G1P3 プロセスH2 N2パージ開', 'format': 'bit', 'list_index': 237,
+     'device': 'M600'},   
+    {'name': 'G2P3 プロセスCH4 N2パージ開', 'format': 'bit', 'list_index': 239,
+     'device': 'M600'},   
+    {'name': 'G3P3 プロセスO2 N2パージ開', 'format': 'bit', 'list_index': 241,
+     'device': 'M600'},  
+    {'name': 'G4P3 プロセスAr N2パージ開', 'format': 'bit', 'list_index': 245,
+     'device': 'M600'},   
+    {'name': 'G6P3 シールドH2 N2パージ開', 'format': 'bit', 'list_index': 236,
+     'device': 'M600'}, 
+    {'name': 'G7P3 シールドAr N2パージ開', 'format': 'bit', 'list_index': 243,
+     'device': 'M600'},   
 ]
 # デバッグ用
 # logging_monitor_data = [
@@ -278,6 +328,7 @@ class Logging_Task:
         # デバッグ用
         D4000_list, success1 = data_queue_handler.safe_plc_data_access(DeviceEnum.MIX_D4000)
         M3400_list, success2 = data_queue_handler.safe_plc_data_access(DeviceEnum.BITS_M3400)
+        M600_list, success3 = data_queue_handler.safe_plc_data_access(DeviceEnum.BITS_M600)
 
         if success is None:
              # 通信に失敗している場合はスキップ
@@ -315,6 +366,11 @@ class Logging_Task:
                     logdata.append(f'{D4000_list[index]:{format_spec}}')
                 elif dev_type == 'M3400':
                     if M3400_list[index]:
+                        logdata.append(f'1')
+                    else:
+                        logdata.append(f'0')
+                elif dev_type == 'M600':
+                    if M600_list[index]:
                         logdata.append(f'1')
                     else:
                         logdata.append(f'0')
